@@ -1,0 +1,34 @@
+apiVersion: apps/v1
+
+kind: Deployment
+
+metadata:
+  name: customers-deployment
+
+  labels:
+    app: customers
+
+spec:
+  replicas: {{ .Values.deployment.replicas }}
+
+  selector:
+    matchLabels:
+      app: customers
+
+  template:
+    metadata:
+      annotations:
+        # prometheus.io/port: "3500"
+        # prometheus.io/path: "/metrics"
+        # prometheus.io/scrape: "true"
+      labels:
+        app: customers
+
+    spec:
+      containers:
+        - name: customers
+
+          image: docker.io/laykidi/customers:{{ .Values.image.tag }}
+
+          ports:
+            - containerPort: {{ .Values.port }}

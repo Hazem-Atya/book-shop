@@ -1,0 +1,4 @@
+apiVersion: v2
+name: books service
+description: helm chart to install the book service
+version: 0.1.0

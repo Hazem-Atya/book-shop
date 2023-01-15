@@ -1,0 +1,34 @@
+apiVersion: apps/v1
+
+kind: Deployment
+
+metadata:
+  name: orders-deployment
+
+  labels:
+    app: orders
+
+spec:
+  replicas: {{ .Values.deployment.replicas }}
+
+  selector:
+    matchLabels:
+      app: orders
+
+  template:
+    metadata:
+      annotations:
+        # prometheus.io/port: "3500"
+        # prometheus.io/path: "/metrics"
+        # prometheus.io/scrape: "true"
+      labels:
+        app: orders
+
+    spec:
+      containers:
+        - name: orders
+
+          image: docker.io/laykidi/orders:{{ .Values.image.tag }}
+
+          ports:
+            - containerPort: {{ .Values.port }}
