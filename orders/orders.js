@@ -107,7 +107,7 @@ app.delete("/order/:id", (req, res) => {
     .catch((err) => res.send(err.message));
 });
 
-const msbport = parseInt(process.env.ORDER_PORT) || 3000;
+const port = parseInt(process.env.ORDER_PORT) || 3000;
 
 app.listen(port, () => {
   console.log(`Listening: http://localhost:${port}`);
