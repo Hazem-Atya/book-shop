@@ -4,4 +4,4 @@ deployment:
 image:
   tag: latest
 
-port: 4000
+port: 3700
