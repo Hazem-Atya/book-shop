@@ -68,6 +68,7 @@ app.get("/orders", (req, res) => {
 
 app.get("/order/:id", async (req, res) => {
 
+  console.log("-------------------------ENTERING THE REQUEST---------------------------")
   const order = await Order.findById(req.params.id);
   const orderObj = {
     id: order.id,
@@ -76,6 +77,7 @@ app.get("/order/:id", async (req, res) => {
     customerName: "",
     bookTitle: "",
   };
+  console.log(order);
   if (order) {
     console.log(customerUrl);
     console.log(order.customerId);
@@ -89,6 +91,8 @@ app.get("/order/:id", async (req, res) => {
       .get(bookUrl + "book/" + order.bookId)
     orderObj.bookTitle = bookResponse.data.title;
     res.status(200).send(orderObj);
+    console.log("-------------------------LEAVING THE REQUEST---------------------------")
+
   } else {
     res.status(404).send("No order found with given id");
   }
