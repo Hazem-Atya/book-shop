@@ -38,8 +38,8 @@ spec:
             - name: BOOK_HOST
               value: "book-service"
             - name: BOOK_PORT
-              value: "3600"
+              value: "80"
             - name: CUSTOMER_HOST
               value: "customer-service"
             - name: CUSTOMER_PORT
-              value: "3700"
+              value: "80"
