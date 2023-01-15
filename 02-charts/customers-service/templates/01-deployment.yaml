@@ -29,6 +29,7 @@ spec:
         - name: customers
 
           image: docker.io/laykidi/customers:{{ .Values.image.tag }}
+          imagePullPolicy: Always
 
           ports:
             - containerPort: {{ .Values.port }}

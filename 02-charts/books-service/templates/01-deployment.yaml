@@ -30,6 +30,7 @@ spec:
         - name: books
 
           image: docker.io/laykidi/books:{{ .Values.image.tag }}
+          imagePullPolicy: Always
 
           ports:
             - containerPort: {{ .Values.port }}
