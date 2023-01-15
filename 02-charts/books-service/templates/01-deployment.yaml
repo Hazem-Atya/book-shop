@@ -33,3 +33,6 @@ spec:
 
           ports:
             - containerPort: {{ .Values.port }}
+          env:
+            - name: BOOK_PORT
+              value: {{ .Values.port }}

@@ -79,7 +79,8 @@ app.delete("/book/:id", (req, res) => {
     .catch((err) => res.status(400).send(err));
 });
 
-const port = process.env.PORT || 3000;
+
+const port = parseInt(process.env.BOOK_PORT) || 3000;
 app.listen(port, () => {
   console.log(`Listening: http://localhost:${port}`);
   console.log("Up and running books service");

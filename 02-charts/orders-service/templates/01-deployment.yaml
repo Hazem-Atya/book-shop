@@ -32,3 +32,6 @@ spec:
 
           ports:
             - containerPort: {{ .Values.port }}
+          env:
+            - name: ORDER_PORT
+              value: {{ .Values.port }}

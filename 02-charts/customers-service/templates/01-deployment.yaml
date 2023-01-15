@@ -32,3 +32,6 @@ spec:
 
           ports:
             - containerPort: {{ .Values.port }}
+          env:
+            - name: CUSTOMER_PORT
+              value: {{ .Values.port }}

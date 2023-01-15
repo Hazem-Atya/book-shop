@@ -7,3 +7,5 @@
 * `terraform init`
 * `terraform output -raw kube_config > ~/.kube/config ` :  save the kube config certificate needed to authenticate to the cluster.
 * `terraform apply`
+
+* 

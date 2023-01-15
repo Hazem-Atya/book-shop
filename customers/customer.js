@@ -79,7 +79,8 @@ app.delete("/customer/:id", (req, res) => {
     .catch((err) => res.send(err.message));
 });
 
-const port = process.env.PORT || 4000;
+const port = parseInt(process.env.CUSTOMER_PORT) || 3000;
+
 app.listen(port, () => {
   console.log(`Listening: http://localhost:${port}`);
   console.log("Up and running customer service");
