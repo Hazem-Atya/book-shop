@@ -16,9 +16,8 @@ const Order = mongoose.model("orders");
 
 const url = process.env.MONGO_URL;
 
-const bookUrl = process.env.BOOK_URL || "http://localhost:3000/book/";
-const customerUrl =
-  process.env.CUSTOMER_URL || "http://localhost:4000/customer/";
+const bookUrl = "http://" + process.env.BOOK_HOST + ":" + process.env.BOOK_PORT + "/"
+const customerUrl = "http://" + process.env.BOOK_HOST + ":" + process.env.BOOK_PORT + "/"
 
 console.log(url, bookUrl, customerUrl);
 
