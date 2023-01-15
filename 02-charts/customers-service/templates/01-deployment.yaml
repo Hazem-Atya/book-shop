@@ -34,4 +34,4 @@ spec:
             - containerPort: {{ .Values.port }}
           env:
             - name: CUSTOMER_PORT
-              value: 3700
+              value: "3700"

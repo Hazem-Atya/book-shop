@@ -97,5 +97,5 @@ jobs:
           context: orders/
           file: orders/Dockerfile
           push: true # will it push or just build
-          tags: ${{ secrets.DOCKER_HUB_USERNAME }}/customers:${{github.sha}} # tag of the image
+          tags: ${{ secrets.DOCKER_HUB_USERNAME }}/orders:${{github.sha}} # tag of the image
           # tags: ${{ secrets.DOCKER_HUB_USERNAME }}/customers:${{github.sha}} # tag of the image
