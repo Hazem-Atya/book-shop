@@ -82,11 +82,14 @@ app.post("/api/v1/customers", async (req, res) => {
     res.status(200).send(newCustomer.data);
 })
 app.get("/api/v1/customers/:id", async (req, res) => {
+    const id = req.params.id
     let customers = await axios
         .get(customerUrl + "customer/" + id)
     res.status(200).send(customers.data);
 })
 app.delete("/api/v1/customers/:id", async (req, res) => {
+    const id = req.params.id
+
     let customers = await axios
         .delete(customerUrl + "customer/" + id)
     res.status(200).send(customers.data);
