@@ -69,6 +69,7 @@ app.get("/orders", (req, res) => {
 app.get("/order/:id", async (req, res) => {
 
   console.log("-------------------------ENTERING THE REQUEST---------------------------")
+  console.log("I received id: ", req.params.id)
   const order = await Order.findById(req.params.id);
   const orderObj = {
     id: order.id,
