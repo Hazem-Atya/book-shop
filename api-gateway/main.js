@@ -22,26 +22,66 @@ app.get("/api/v1/orders", async (req, res) => {
     let orders = await axios
         .get(orderUrl + "orders")
     res.status(200).send(orders.data);
-
+})
+app.get("/api/v1/orders/:id", async (req, res) => {
+    const id = req.params.id
+    let order = await axios
+        .get(orderUrl + "order/" + id)
+    res.status(200).send(order.data);
+})
+app.delete("/api/v1/orders/:id", async (req, res) => {
+    const id = req.params.id
+    let order = await axios
+        .delete(orderUrl + "order/" + id)
+    res.status(200).send(order.data);
 })
 
 
 app.get("/api/v1/books", async (req, res) => {
-    let orders = await axios
+    let books = await axios
         .get(bookUrl + "books")
+    res.status(200).send(books.data);
+})
+
+app.get("/api/v1/books/:id", async (req, res) => {
+    const id = req.params.id
+    let orders = await axios
+        .get(bookUrl + "book/" + id)
+    res.status(200).send(orders.data);
+})
+app.post("/api/v1/books", async (req, res) => {
+    const book = req.body;
+    let newBook = await axios
+        .post(bookUrl + "book", book)
+    res.status(200).send(newBooks.data);
+})
+app.delete("/api/v1/books/:id", async (req, res) => {
+    const id = req.params.id
+    let orders = await axios
+        .delete(bookUrl + "book/" + id)
     res.status(200).send(orders.data);
 })
 
 
 app.get("/api/v1/customers", async (req, res) => {
-    let orders = await axios
+    let customers = await axios
         .get(customerUrl + "customers")
-    res.status(200).send(orders.data);
+    res.status(200).send(customers.data);
+})
+app.get("/api/v1/customers/id", async (req, res) => {
+    let customers = await axios
+        .get(customerUrl + "customer/" + id)
+    res.status(200).send(customers.data);
+})
+app.delete("/api/v1/customers/id", async (req, res) => {
+    let customers = await axios
+        .delete(customerUrl + "customer/" + id)
+    res.status(200).send(customers.data);
 })
 
 const port = parseInt(process.env.API_GATEWAY_PORT);
 
 app.listen(port, () => {
-  console.log(`Listening: on port ${port}`);
-  console.log("Up and running order service");
+    console.log(`Listening: on port ${port}`);
+    console.log("Up and running order service");
 });
