@@ -10,7 +10,7 @@ metadata:
     app: api-gateway
 
 spec:
-  replicas: { { .Values.deployment.replicas } }
+  replicas: {{ .Values.deployment.replicas }}
 
   selector:
     matchLabels:
@@ -29,11 +29,11 @@ spec:
       containers:
         - name: api-gateway
 
-          image: docker.io/laykidi/api-gateway:{{ .Values.image.tag }}
+          image: docker.io/laykidi/api-gateway:{{.Values.image.tag}}
           imagePullPolicy: Always
 
           ports:
-            - containerPort: { { .Values.port } }
+            - containerPort: {{ .Values.port }}
           env:
             - name: API_GATEWAY_PORT
               value: "3900"

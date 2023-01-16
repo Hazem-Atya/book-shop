@@ -1,12 +1,12 @@
 {
-  "name": "orders",
+  "name": "api-gateway",
   "version": "1.0.0",
   "description": "",
-  "main": "orders.js",
+  "main": "main.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "node orders.js",
-    "dev": "nodemon orders.js"
+    "start": "node main.js",
+    "dev": "nodemon main.js"
   },
   "keywords": [],
   "author": "",

@@ -1,10 +1,10 @@
 apiVersion: v1
 kind: Service
 metadata:
-  name: book-service
+  name: api-gateway-service
 spec:
   selector:
-    app: books
+    app: api-gateway
   ports:
   - name: express-port
     protocol: TCP
