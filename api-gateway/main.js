@@ -53,7 +53,7 @@ app.post("/api/v1/books", async (req, res) => {
     const book = req.body;
     let newBook = await axios
         .post(bookUrl + "book", book)
-    res.status(200).send(newBooks.data);
+    res.status(200).send(newBook.data);
 })
 app.delete("/api/v1/books/:id", async (req, res) => {
     const id = req.params.id
