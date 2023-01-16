@@ -23,6 +23,12 @@ app.get("/api/v1/orders", async (req, res) => {
         .get(orderUrl + "orders")
     res.status(200).send(orders.data);
 })
+app.post("/api/v1/orders", async (req, res) => {
+    const order = req.body;
+    let newOrder = await axios
+        .post(orderUrl + "order", order)
+    res.status(201).send(newOrder.data);
+})
 app.get("/api/v1/orders/:id", async (req, res) => {
     const id = req.params.id
     let order = await axios
@@ -68,12 +74,19 @@ app.get("/api/v1/customers", async (req, res) => {
         .get(customerUrl + "customers")
     res.status(200).send(customers.data);
 })
-app.get("/api/v1/customers/id", async (req, res) => {
+
+app.post("/api/v1/customers", async (req, res) => {
+    const customer = req.body;
+    let newCustomer = await axios
+        .post(customerUrl + "customer", customer)
+    res.status(200).send(newCustomer.data);
+})
+app.get("/api/v1/customers/:id", async (req, res) => {
     let customers = await axios
         .get(customerUrl + "customer/" + id)
     res.status(200).send(customers.data);
 })
-app.delete("/api/v1/customers/id", async (req, res) => {
+app.delete("/api/v1/customers/:id", async (req, res) => {
     let customers = await axios
         .delete(customerUrl + "customer/" + id)
     res.status(200).send(customers.data);
