@@ -1,0 +1,4 @@
+apiVersion: v2
+name: API gateway service
+description: helm chart to install the API gateway
+version: 0.1.0

@@ -1,0 +1,8 @@
+deployment:
+  replicas: 1
+
+image:
+  tag: latest
+
+port: 3900
+
