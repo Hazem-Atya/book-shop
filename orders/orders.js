@@ -71,15 +71,22 @@ app.get("/order/:id", async (req, res) => {
   console.log("-------------------------ENTERING THE REQUEST---------------------------")
   console.log("I received id: ", req.params.id)
   const order = await Order.findById(req.params.id);
-  const orderObj = {
-    id: order.id,
-    initialDate: order.initialDate,
-    deliveryDate: order.deliveryDate,
+  let orderObj = {
+    id: "",
+    initialDate: "",
+    deliveryDate: "",
     customerName: "",
     bookTitle: "",
   };
   console.log(order);
   if (order) {
+    orderObj = {
+      id: order.id,
+      initialDate: order.initialDate,
+      deliveryDate: order.deliveryDate,
+      customerName: "",
+      bookTitle: "",
+    };
     console.log(customerUrl);
     console.log(order.customerId);
     // axios.get("http://localhost:4000/customer/63c3c7c72dcffe5965edd524")
