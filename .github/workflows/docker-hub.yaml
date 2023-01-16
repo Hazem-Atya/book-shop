@@ -103,8 +103,6 @@ jobs:
 
   Build-api-gateway-svc:
     runs-on: ubuntu-latest
-    # needs:
-    #      - Test
     steps:
       - name: Checkout
         uses: actions/checkout@v3
@@ -121,7 +119,7 @@ jobs:
 
         with:
           context: api-gateway/
-          file: orders/Dockerfile
+          file: api-gateway/Dockerfile
           push: true # will it push or just build
           tags: ${{ secrets.DOCKER_HUB_USERNAME }}/api-gateway # tag of the image
           # tags: ${{ secrets.DOCKER_HUB_USERNAME }}/customers:${{github.sha}} # tag of the image
