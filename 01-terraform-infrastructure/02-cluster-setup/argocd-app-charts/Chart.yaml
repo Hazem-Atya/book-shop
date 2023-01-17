@@ -1,0 +1,4 @@
+apiVersion: v2
+name: Argo CD apps
+description: helm chart to install our Apps in ArgoCD
+version: 0.1.0
