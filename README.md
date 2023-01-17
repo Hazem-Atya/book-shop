@@ -48,7 +48,8 @@ I used terraform with two stacks, the first stack for
 * ![image](https://user-images.githubusercontent.com/53778545/212966766-3db2123b-123b-4553-b20e-a8937801e051.png)
 
 * traces with open telemetry and datadog
-* metrics with prometheus
+* metrics with prometheus (tracking number of requests and business metrics (new customers))
+![image](https://user-images.githubusercontent.com/53778545/212967743-7d30b221-b0d7-4ad1-8f94-79adb24e2f03.png)
 
 
 
