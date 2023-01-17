@@ -1,26 +1,62 @@
 # book-shop
 
+## Introduction and context
+### What is this?
+End of semester project of the DevOps minor.
+This project aims to impement observability,automation and deployment principles using several technologies.
+### Technologies
+* NodeJs for development
+* Terraform 
+* Kubernetes 
+* Datadog 
 
 
-# Provisionning the AKS cluster 
+# Setup
+## Requirements:
+ * Terraform 
+ * kubectl 
+ * azure account
+## Setup 
+
+### First stack: provisionning an AKS cluster
 * `cd 01-terraform-infrastructure/01-cluster-provisionning`
 * `terraform init`
 * `terraform apply`
-* `terraform output -raw kube_config_raw > ~/.kube/config ` :  save the kube config certificate needed to authenticate to the cluster.
+
+### Setting up the cluster
+* `cd 01-terraform-infrastructure/02-cluster-setup`
+* `terraform init`
+* `terraform apply`
+The second stack will create the needed namespaces and install argocd, datadog, prometheus.
+
+# Project architecture 
+![Untitled Diagram (1)](https://user-images.githubusercontent.com/53778545/212965790-2a988703-b14c-4953-8131-f020b8955ba8.jpg)
 
 
-* Argo CD creates a passpord and stores it as a secret in the cluster.
+# Automation
+I used terraform with two stacks, the first stack for 
+
+
+# Deployment and CI/CD
+* Build using github actions
+* Deploy using argocd
+![image](https://user-images.githubusercontent.com/53778545/212965929-57d5fa73-7205-47b4-ad6a-181f91ea6f14.png)
+
+
+# Observability
+* logging using datadog
+* traces with open telemetry and datadog
+* metrics with prometheus
+
+
+
+
+-------------------
+
+* Argo CD creates a password and stores it as a secret in the cluster.
 * To get the password: `kubectl -n argocd get secret argocd-initial-admin-secret -o jsonpath="{.data.password}" | base64 -d; echo`
 * `$ kubectl port-forward -n argocd svc/argo-cd-argocd-server 7500:80`, then open `http://localhost:7500` in the browser.
 * Login to using the `admin` for the username and the password fom the previous command.
 
 
 
-* argocd, ingress controller kolhom yetsabou mel terraform
-* aamalt depends on fil terraform, fil block li yasna3 apps, lzm yetesna3 baad ingress controller w ba3d matetsab il argocd
-* token taa repo hatitou variable fi terraform weli hya bid'ha tetaada ka value bch yasna3 beha secrets
-
-### README STRUCTURE :
-* introduction and context (7ot links lil projects lo5rin)
-* Setup
-* Project tree + explication ilkol folder
