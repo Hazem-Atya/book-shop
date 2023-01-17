@@ -55,10 +55,19 @@ resource "helm_release" "ingress_nginx" {
   }
 }
 
+
+resource "helm_release" "prometheus" {
+  name       = "book-shop-prometheus"
+  repository = "https://prometheus-community.github.io/helm-charts"
+  chart      = "prometheus"
+}
+
+
 resource "helm_release" "argocd_apps" {
-    depends_on = [
-    helm_release.argo, 
-    helm_release.ingress_nginx
+  depends_on = [
+    helm_release.argo,
+    helm_release.ingress_nginx,
+    helm_release.prometheus
   ]
   name  = "argo-cd-apps"
   chart = "./argocd-app-charts"
@@ -70,13 +79,4 @@ resource "helm_release" "argocd_apps" {
     name  = "gitrepo.username"
     value = var.githubusername
   }
-}
-
-resource "helm_release" "prometheus" {
-    depends_on = [
-    helm_release.argocd_apps
-  ]
-  name  = "book-shop-prometheus"
-  repository = "https://prometheus-community.github.io/helm-charts" 
-  chart = "prometheus"
 }
