@@ -45,6 +45,8 @@ I used terraform with two stacks, the first stack for
 
 # Observability
 * logging using datadog
+* ![image](https://user-images.githubusercontent.com/53778545/212966766-3db2123b-123b-4553-b20e-a8937801e051.png)
+
 * traces with open telemetry and datadog
 * metrics with prometheus
 
