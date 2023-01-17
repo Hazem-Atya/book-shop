@@ -10,7 +10,13 @@ const numberOfRequestsCounter = new client.Counter({
     help: 'counts the number of requests that the fact endpoint recieved',
     labelNames: ['status'],
 });
+
+const newCustomersCounter = new client.Counter({
+    name: 'New customer accounts',
+    help: 'counts the new customer accounts'
+});
 register.registerMetric(numberOfRequestsCounter)
+register.registerMetric(newCustomersCounter)
 //--------------------------------------------------------------
 const winston = require('winston');
 const rootLogger = winston.createLogger({
@@ -52,19 +58,64 @@ app.get("/", (req, res) => {
 });
 
 app.get("/api/v1/orders", async (req, res) => {
+    var ip = req.headers['x-forwarded-for'] || req.socket.remoteAddress
+    let reqID = req.headers['X-Request-ID']
+    if (!reqID)
+        reqID = getRequestId();
+    requestLogger = rootLogger.child({
+        userIp: ip,
+        request_id: reqID
+    })
+
+
+
     let orders = await axios
         .get(orderUrl + "orders")
     numberOfRequestsCounter.inc({ 'status': 200 });
     res.status(200).send(orders.data);
 })
 app.post("/api/v1/orders", async (req, res) => {
+    var ip = req.headers['x-forwarded-for'] || req.socket.remoteAddress
+    let reqID = req.headers['X-Request-ID']
+    if (!reqID)
+        reqID = getRequestId();
+    requestLogger = rootLogger.child({
+        userIp: ip,
+        request_id: reqID
+    })
+
     const order = req.body;
-    let newOrder = await axios
-        .post(orderUrl + "order", order)
-    numberOfRequestsCounter.inc({ 'status': 201 });
-    res.status(201).send(newOrder.data);
+    try {
+        let newOrder = await axios
+            .post(orderUrl + "order", order)
+        numberOfRequestsCounter.inc({ 'status': 201 });
+        newCustomersCounter.inc();
+        requestLogger.log({
+            level: "info",
+            message: `Customer created successfully`
+        })
+        res.status(201).send(newOrder.data);
+
+
+    } catch (e) {
+        requestLogger.log({
+            level: "info",
+            message: `Error creating customer`
+        })
+    }
+
+
 })
 app.get("/api/v1/orders/:id", async (req, res) => {
+    var ip = req.headers['x-forwarded-for'] || req.socket.remoteAddress
+    let reqID = req.headers['X-Request-ID']
+    if (!reqID)
+        reqID = getRequestId();
+    requestLogger = rootLogger.child({
+        userIp: ip,
+        request_id: reqID
+    })
+
     const id = req.params.id
     let order = await axios
         .get(orderUrl + "order/" + id)
@@ -72,6 +123,14 @@ app.get("/api/v1/orders/:id", async (req, res) => {
     res.status(200).send(order.data);
 })
 app.delete("/api/v1/orders/:id", async (req, res) => {
+    var ip = req.headers['x-forwarded-for'] || req.socket.remoteAddress
+    let reqID = req.headers['X-Request-ID']
+    if (!reqID)
+        reqID = getRequestId();
+    requestLogger = rootLogger.child({
+        userIp: ip,
+        request_id: reqID
+    })
     const id = req.params.id
     let order = await axios
         .delete(orderUrl + "order/" + id)
@@ -80,40 +139,96 @@ app.delete("/api/v1/orders/:id", async (req, res) => {
 
 
 app.get("/api/v1/books", async (req, res) => {
-    var ip = req.headers['x-forwarded-for'] || req.socket.remoteAddress 
-    let reqID = getRequestId();
+    var ip = req.headers['x-forwarded-for'] || req.socket.remoteAddress
+    let reqID = req.headers['X-Request-ID']
+    if (!reqID)
+        reqID = getRequestId();
     requestLogger = rootLogger.child({
         userIp: ip,
         request_id: reqID
     })
 
+    try {
+        const config = {
+            headers: {
+                'X-Request-ID': reqID
+            }
+        };
 
-    let books = await axios
-        .get(bookUrl + "books")
-    numberOfRequestsCounter.inc({ 'status': 200 });
+        let books = await axios
+            .get(bookUrl + "books", config)
+        numberOfRequestsCounter.inc({ 'status': 200 });
 
-    requestLogger.log({
-        level: "info",
-        message: `Books array fetched successfully`
-    })
-    res.status(200).send(books.data);
+        requestLogger.log({
+            level: "info",
+            message: `Books array fetched successfully`
+        })
+        res.status(200).send(books.data);
+    } catch (e) {
+        requestLogger.log({
+            level: "error",
+            message: `Error fetching books`
+        })
+        numberOfRequestsCounter.inc({ 'status': 400 });
+        res.status(400).send({ message: "error fetching books" });
+
+    }
+
 })
 
 app.get("/api/v1/books/:id", async (req, res) => {
-    const id = req.params.id
-    let orders = await axios
-        .get(bookUrl + "book/" + id)
-    numberOfRequestsCounter.inc({ 'status': 200 });
+    var ip = req.headers['x-forwarded-for'] || req.socket.remoteAddress
+    let reqID = req.headers['X-Request-ID']
+    if (!reqID)
+        reqID = getRequestId();
+    requestLogger = rootLogger.child({
+        userIp: ip,
+        request_id: reqID
+    })
 
-    res.status(200).send(orders.data);
+    const id = req.params.id
+    try {
+        let orders = await axios
+            .get(bookUrl + "book/" + id)
+        numberOfRequestsCounter.inc({ 'status': 200 });
+        res.status(200).send(orders.data);
+
+    }
+    catch (e) {
+        requestLogger.log({
+            level: "error",
+            message: `Error fetching books`
+        })
+        numberOfRequestsCounter.inc({ 'status': 400 });
+        res.status(400).send({ message: "error fetching book" });
+    }
+
 })
 app.post("/api/v1/books", async (req, res) => {
+    var ip = req.headers['x-forwarded-for'] || req.socket.remoteAddress
+    let reqID = req.headers['X-Request-ID']
+    if (!reqID)
+        reqID = getRequestId();
+    requestLogger = rootLogger.child({
+        userIp: ip,
+        request_id: reqID
+    })
+
     const book = req.body;
     let newBook = await axios
         .post(bookUrl + "book", book)
     res.status(200).send(newBook.data);
 })
 app.delete("/api/v1/books/:id", async (req, res) => {
+    var ip = req.headers['x-forwarded-for'] || req.socket.remoteAddress
+    let reqID = req.headers['X-Request-ID']
+    if (!reqID)
+        reqID = getRequestId();
+    requestLogger = rootLogger.child({
+        userIp: ip,
+        request_id: reqID
+    })
+
     const id = req.params.id
     let orders = await axios
         .delete(bookUrl + "book/" + id)
@@ -122,24 +237,60 @@ app.delete("/api/v1/books/:id", async (req, res) => {
 
 
 app.get("/api/v1/customers", async (req, res) => {
+    var ip = req.headers['x-forwarded-for'] || req.socket.remoteAddress
+    let reqID = req.headers['X-Request-ID']
+    if (!reqID)
+        reqID = getRequestId();
+    requestLogger = rootLogger.child({
+        userIp: ip,
+        request_id: reqID
+    })
+
     let customers = await axios
         .get(customerUrl + "customers")
     res.status(200).send(customers.data);
 })
 
 app.post("/api/v1/customers", async (req, res) => {
+    var ip = req.headers['x-forwarded-for'] || req.socket.remoteAddress
+    let reqID = req.headers['X-Request-ID']
+    if (!reqID)
+        reqID = getRequestId();
+    requestLogger = rootLogger.child({
+        userIp: ip,
+        request_id: reqID
+    })
+
     const customer = req.body;
     let newCustomer = await axios
         .post(customerUrl + "customer", customer)
     res.status(200).send(newCustomer.data);
 })
 app.get("/api/v1/customers/:id", async (req, res) => {
+    var ip = req.headers['x-forwarded-for'] || req.socket.remoteAddress
+    let reqID = req.headers['X-Request-ID']
+    if (!reqID)
+        reqID = getRequestId();
+    requestLogger = rootLogger.child({
+        userIp: ip,
+        request_id: reqID
+    })
+
     const id = req.params.id
     let customers = await axios
         .get(customerUrl + "customer/" + id)
     res.status(200).send(customers.data);
 })
 app.delete("/api/v1/customers/:id", async (req, res) => {
+    var ip = req.headers['x-forwarded-for'] || req.socket.remoteAddress
+    let reqID = req.headers['X-Request-ID']
+    if (!reqID)
+        reqID = getRequestId();
+    requestLogger = rootLogger.child({
+        userIp: ip,
+        request_id: reqID
+    })
+
     const id = req.params.id
 
     let customers = await axios

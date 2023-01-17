@@ -15,6 +15,32 @@ const Book = mongoose.model("books");
 // const url = process.env.MONGO_URL || "mongodb://mongo:27017/books";
 const url = process.env.MONGO_URL;
 
+//-------------------------------
+//--------------------------------------------------------------
+const winston = require('winston');
+const rootLogger = winston.createLogger({
+  level: 'info',    // Log only if info.level is less than or equal to this level
+  transports: [
+    new winston.transports.Console(),
+  ]
+})
+// generating reauest id
+const crypto = require('crypto');
+
+function getRequestId() {
+  let uuid = crypto.randomUUID();
+  return uuid;
+}
+
+
+//----------------------------------------------------------------------
+
+
+
+
+
+
+
 mongoose
   .connect(url, {
     useNewUrlParser: true,
@@ -44,10 +70,23 @@ app.post("/book", async (req, res) => {
 });
 
 app.get("/books", (req, res) => {
-  console.log("Entered function successfully")
+
+  var ip = req.headers['x-forwarded-for'] || req.socket.remoteAddress
+  let reqID = req.headers['X-Request-ID']
+  if (!reqID)
+    reqID = getRequestId();
+  requestLogger = rootLogger.child({
+    userIp: ip,
+    request_id: reqID
+  })
+
   Book.find()
     .then((data) => {
-      console.log("Everything is good, fetching data")
+
+      requestLogger.log({
+        level: "info",
+        message: `Inside book service: data fetched`
+      })
 
       res.status(200).send(data);
     })
