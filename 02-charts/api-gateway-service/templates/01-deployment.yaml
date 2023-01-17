@@ -19,9 +19,9 @@ spec:
   template:
     metadata:
       annotations:
-      # prometheus.io/port: "3500"
-      # prometheus.io/path: "/metrics"
-      # prometheus.io/scrape: "true"
+      prometheus.io/port: "3900"
+      prometheus.io/path: "/metrics"
+      prometheus.io/scrape: "true"
       labels:
         app: api-gateway
 

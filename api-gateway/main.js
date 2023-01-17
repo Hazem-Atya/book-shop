@@ -1,3 +1,18 @@
+//---------------------------------------------
+const client = require('prom-client');
+const collectDefaultMetrics = client.collectDefaultMetrics;
+const Registry = client.Registry;
+const register = new Registry();
+collectDefaultMetrics({ register });
+
+const numberOfRequestsCounter = new client.Counter({
+    name: 'number_of_requests',
+    help: 'counts the number of requests that the fact endpoint recieved',
+    labelNames: ['status'],
+});
+register.registerMetric(numberOfRequestsCounter)
+//--------------------------------------------------------------
+
 const express = require("express");
 const app = express();
 const morgan = require("morgan");
@@ -21,18 +36,21 @@ app.get("/", (req, res) => {
 app.get("/api/v1/orders", async (req, res) => {
     let orders = await axios
         .get(orderUrl + "orders")
+    numberOfRequestsCounter.inc({ 'status': 200 });
     res.status(200).send(orders.data);
 })
 app.post("/api/v1/orders", async (req, res) => {
     const order = req.body;
     let newOrder = await axios
         .post(orderUrl + "order", order)
+    numberOfRequestsCounter.inc({ 'status': 201 });
     res.status(201).send(newOrder.data);
 })
 app.get("/api/v1/orders/:id", async (req, res) => {
     const id = req.params.id
     let order = await axios
         .get(orderUrl + "order/" + id)
+    numberOfRequestsCounter.inc({ 'status': 200 });
     res.status(200).send(order.data);
 })
 app.delete("/api/v1/orders/:id", async (req, res) => {
@@ -46,6 +64,7 @@ app.delete("/api/v1/orders/:id", async (req, res) => {
 app.get("/api/v1/books", async (req, res) => {
     let books = await axios
         .get(bookUrl + "books")
+    numberOfRequestsCounter.inc({ 'status': 200 });
     res.status(200).send(books.data);
 })
 
@@ -53,6 +72,8 @@ app.get("/api/v1/books/:id", async (req, res) => {
     const id = req.params.id
     let orders = await axios
         .get(bookUrl + "book/" + id)
+    numberOfRequestsCounter.inc({ 'status': 200 });
+
     res.status(200).send(orders.data);
 })
 app.post("/api/v1/books", async (req, res) => {
