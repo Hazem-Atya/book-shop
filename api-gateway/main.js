@@ -33,12 +33,12 @@ function getRequestId() {
 
 const express = require("express");
 const app = express();
-const morgan = require("morgan");
+// const morgan = require("morgan");
 const helmet = require("helmet");
 const cors = require("cors");
 require("dotenv").config();
 const axios = require("axios");
-app.use(morgan("dev"));
+// app.use(morgan("dev"));
 app.use(helmet());
 app.use(cors());
 app.use(express.json());
