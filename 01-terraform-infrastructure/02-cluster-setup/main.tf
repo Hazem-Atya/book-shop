@@ -62,12 +62,39 @@ resource "helm_release" "prometheus" {
   chart      = "prometheus"
 }
 
+resource "helm_release" "datadog" {
+  name       = "book-shop-datadog"
+  repository = "https://helm.datadoghq.com"
+  chart      = "datadog"
+  set {
+    name  = "datadog.site"
+    value = "datadoghq.com"
+  }
+  set {
+    name  = "datadog.kubelet.tlsVerify"
+    value = false
+  }
+  set {
+    name  = "datadog.logs.enabled"
+    value = true
+  }
+    set {
+    name  = "datadog.logs.containerCollectAll"
+    value = true
+  }
+    set {
+    name  = "datadog.apiKey"
+    value = "3a45549934797bcb8a647a4a9ff5324ad7a540b6"
+  }
+}
+
 
 resource "helm_release" "argocd_apps" {
   depends_on = [
     helm_release.argo,
     helm_release.ingress_nginx,
-    helm_release.prometheus
+    helm_release.prometheus,
+    helm_release.datadog
   ]
   name  = "argo-cd-apps"
   chart = "./argocd-app-charts"
