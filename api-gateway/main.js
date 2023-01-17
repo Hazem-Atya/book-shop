@@ -12,7 +12,7 @@ const numberOfRequestsCounter = new client.Counter({
 });
 
 const newCustomersCounter = new client.Counter({
-    name: 'New customer accounts',
+    name: 'new_customer_accounts',
     help: 'counts the new customer accounts'
 });
 register.registerMetric(numberOfRequestsCounter)
