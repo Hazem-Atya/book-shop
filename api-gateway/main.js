@@ -115,6 +115,12 @@ app.delete("/api/v1/customers/:id", async (req, res) => {
         .delete(customerUrl + "customer/" + id)
     res.status(200).send(customers.data);
 })
+app.get('/metrics', async (req, res) => {
+    res.set('Content-Type', register.contentType);
+    let metrics = await register.metrics();
+    res.send(metrics);
+  })
+
 
 const port = parseInt(process.env.API_GATEWAY_PORT);
 
