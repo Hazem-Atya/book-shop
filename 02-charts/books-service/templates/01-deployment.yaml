@@ -38,9 +38,9 @@ spec:
             - name: BOOK_PORT
               value: "3600"
             - name: HOST_IP
-                  valueFrom:
-                    fieldRef:
-                      fieldPath: status.hostIP
+              valueFrom:
+                fieldRef:
+                  fieldPath: status.hostIP
            # the second env variable uses the previous variable.
             - name: OTEL_EXPORTER_OTLP_ENDPOINT  
               value: "http://$(HOST_IP):4317"

@@ -10,7 +10,7 @@ metadata:
     app: api-gateway
 
 spec:
-  replicas: {{ .Values.deployment.replicas }}
+  replicas: { { .Values.deployment.replicas } }
 
   selector:
     matchLabels:
@@ -33,7 +33,7 @@ spec:
           imagePullPolicy: Always
 
           ports:
-            - containerPort: {{ .Values.port }}
+            - containerPort: { { .Values.port } }
           env:
             - name: API_GATEWAY_PORT
               value: "3900"
@@ -49,14 +49,14 @@ spec:
               value: "order-service.default.svc.cluster.local"
             - name: ORDER_PORT
               value: "80"
-           # The first env  variable gets the host ip (the node ip). 
-           # this env variable is not static, it's known in the run time.
+            # The first env  variable gets the host ip (the node ip).
+            # this env variable is not static, it's known in the run time.
             - name: HOST_IP
-                  valueFrom:
-                    fieldRef:
-                      fieldPath: status.hostIP
-           # the second env variable uses the previous variable.
-            - name: OTEL_EXPORTER_OTLP_ENDPOINT  
+              valueFrom:
+                fieldRef:
+                  fieldPath: status.hostIP
+            # the second env variable uses the previous variable.
+            - name: OTEL_EXPORTER_OTLP_ENDPOINT
               value: "http://$(HOST_IP):4317"
             - name: OTEL_SERVICE_NAME
               value: "fact-service"
