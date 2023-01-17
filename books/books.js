@@ -44,11 +44,16 @@ app.post("/book", async (req, res) => {
 });
 
 app.get("/books", (req, res) => {
+  console.log("Entered function successfully")
   Book.find()
     .then((data) => {
+      console.log("Everything is good, fetching data")
+
       res.status(200).send(data);
     })
     .catch((err) => {
+      console.log("ERROR 400!!")
+
       res.status(400).send(err);
     });
 });
