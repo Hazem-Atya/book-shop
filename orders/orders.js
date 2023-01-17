@@ -6,7 +6,7 @@ const cors = require("cors");
 const mongoose = require("mongoose");
 require("dotenv").config();
 const axios = require("axios");
-app.use(morgan("dev"));
+// app.use(morgan("dev"));
 app.use(helmet());
 app.use(cors());
 app.use(express.json());
