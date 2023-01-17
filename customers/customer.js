@@ -10,6 +10,26 @@ app.use(helmet());
 app.use(cors());
 app.use(express.json());
 
+//--------------------------------------------------------------
+const winston = require('winston');
+const rootLogger = winston.createLogger({
+    level: 'info',    // Log only if info.level is less than or equal to this level
+    transports: [
+        new winston.transports.Console(),
+    ]
+})
+// generating reauest id
+const crypto = require('crypto');
+
+function getRequestId() {
+    let uuid = crypto.randomUUID();
+    return uuid;
+}
+
+
+//----------------------------------------------------------------------
+
+
 
 const customerModel = require("./customer.model.js");
 
