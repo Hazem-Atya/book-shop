@@ -80,7 +80,7 @@ app.delete("/api/v1/orders/:id", async (req, res) => {
 
 
 app.get("/api/v1/books", async (req, res) => {
-    var ip = req.headers['x-forwarded-for'] || req.socket.remoteAddress
+    var ip = req.headers['x-forwarded-for'] || req.socket.remoteAddress 
     let reqID = getRequestId();
     requestLogger = rootLogger.child({
         userIp: ip,
