@@ -1,7 +1,8 @@
-deployment:
+deployment:   
   replicas: 2
 
 image:
+
   tag: latest
 
 port: 3600
