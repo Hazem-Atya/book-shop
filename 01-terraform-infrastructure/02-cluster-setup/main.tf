@@ -78,13 +78,18 @@ resource "helm_release" "datadog" {
     name  = "datadog.logs.enabled"
     value = true
   }
-    set {
+  set {
     name  = "datadog.logs.containerCollectAll"
     value = true
   }
-    set {
+  set {
     name  = "datadog.apiKey"
-    value = "3a45549934797bcb8a647a4a9ff5324ad7a540b6"
+    value = "f154141582295a494fa8f792761102e6"
+  }
+
+  set {
+    name  = "datadog.otlp.receiver.protocols.grpc.enabled"
+    value = true
   }
 }
 
