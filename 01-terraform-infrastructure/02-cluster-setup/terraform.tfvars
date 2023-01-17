@@ -1,2 +1,3 @@
 environment = "dev"
-namespace = "argocd"
+argocd_namespace = "argocd"
+nginx_namespace= "ingress-basic"

@@ -8,10 +8,16 @@ variable "environment" {
 }
 
 
-variable "namespace" {
+variable "argocd_namespace" {
   type        = string
   description = "Namespace to deploy to"
 }
+
+variable "nginx_namespace" {
+  type        = string
+  description = "Namespace to deploy to"
+}
+
 
 variable "githubtoken" {
   type        = string

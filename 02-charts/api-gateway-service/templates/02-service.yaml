@@ -6,7 +6,8 @@ spec:
   selector:
     app: api-gateway
   ports:
-  - name: express-port
-    protocol: TCP
+  - nodePort: 30007
     port: 80
+    protocol: TCP
     targetPort: 3900
+  type: NodePort
