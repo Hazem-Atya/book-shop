@@ -12,6 +12,24 @@ const numberOfRequestsCounter = new client.Counter({
 });
 register.registerMetric(numberOfRequestsCounter)
 //--------------------------------------------------------------
+const winston = require('winston');
+const rootLogger = winston.createLogger({
+    level: 'info',    // Log only if info.level is less than or equal to this level
+    transports: [
+        new winston.transports.Console(),
+    ]
+})
+// generating reauest id
+const crypto = require('crypto');
+
+function getRequestId() {
+    let uuid = crypto.randomUUID();
+    return uuid;
+}
+
+
+//----------------------------------------------------------------------
+
 
 const express = require("express");
 const app = express();
@@ -62,9 +80,22 @@ app.delete("/api/v1/orders/:id", async (req, res) => {
 
 
 app.get("/api/v1/books", async (req, res) => {
+    var ip = req.headers['x-forwarded-for'] || req.socket.remoteAddress
+    let reqID = getRequestId();
+    requestLogger = rootLogger.child({
+        userIp: ip,
+        request_id: reqID
+    })
+
+
     let books = await axios
         .get(bookUrl + "books")
     numberOfRequestsCounter.inc({ 'status': 200 });
+
+    requestLogger.log({
+        level: "info",
+        message: `Books array fetched successfully`
+    })
     res.status(200).send(books.data);
 })
 
@@ -119,7 +150,7 @@ app.get('/metrics', async (req, res) => {
     res.set('Content-Type', register.contentType);
     let metrics = await register.metrics();
     res.send(metrics);
-  })
+})
 
 
 const port = parseInt(process.env.API_GATEWAY_PORT);
