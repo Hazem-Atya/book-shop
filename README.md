@@ -1,21 +1,44 @@
-# book-shop
 
-## Introduction and context
+# Introduction and context
 ### What is this?
-End of semester project of the DevOps minor.
-This project aims to impement observability,automation and deployment principles using several technologies.
+A book shop app built for my end of semester project of the DevOps minor.
+This project aims to impement observability, automation and deployment principles using several technologies and microservices architecture.
 ### Technologies
-* NodeJs for development
+* Languages and frameworks: NodeJs and express.
+* Database: Atlas MongoDB
 * Terraform 
 * Kubernetes 
-* Datadog 
+* Logging and tracing: Datadog 
+* Metrics: Promtheus
 
+# Project tree
+```yaml
+📦 
+├─ .github
+│  └─ workflows
+│     └─ docker-hub.yaml        # worflow for building the docker images and pushing to docker hub
+├─ .gitignore
+├─ 01-terraform-infrastructure
+│  ├─ 01-cluster-provisionning/   # First stack: terraform project for cluster creation
+│  └─ 02-cluster-setup/          # Second stack: terraform project for cluster setup (creating namepsaces and installing several helm charts)
+│     ├─ argocd-app-charts/      #  the helm charts for the argocd apps
+├─ 02-charts # different helm charts for installing the deployments of our services
+│  ├─ api-gateway-service
+│  ├─ books-service
+│  ├─ customers-service
+│  └─ orders-service
+├─ README.md
+├─ api-gateway
+├─ books
+├─ customers
+└─ orders
 
+```
 # Setup
 ## Requirements:
- * Terraform 
- * kubectl 
- * azure account
+ * Terraform CLI 
+ * kubectl: Kubernetes command line tool
+ * Azure account
 ## Setup 
 
 ### First stack: provisionning an AKS cluster
@@ -27,19 +50,15 @@ This project aims to impement observability,automation and deployment principles
 * `cd 01-terraform-infrastructure/02-cluster-setup`
 * `terraform init`
 * `terraform apply`
-The second stack will create the needed namespaces and install argocd, datadog, prometheus.
+The second stack will create the needed namespaces and install argocd, datadog, prometheus, it will also create the argocd applications for our 4 services.
 
 # Project architecture 
-![Untitled Diagram (1)](https://user-images.githubusercontent.com/53778545/212965790-2a988703-b14c-4953-8131-f020b8955ba8.jpg)
-
-
-# Automation
-I used terraform with two stacks, the first stack for 
+![archi_devops (1)](https://user-images.githubusercontent.com/53778545/213315195-ad28eccf-01fc-4854-a3c0-23b43cf69320.jpg)
 
 
 # Deployment and CI/CD
-* Build using github actions
-* Deploy using argocd
+* Build using github actions, create docker images and pushing to docker hub.
+* Deploy using argocd.
 ![image](https://user-images.githubusercontent.com/53778545/212965929-57d5fa73-7205-47b4-ad6a-181f91ea6f14.png)
 
 
@@ -52,14 +71,6 @@ I used terraform with two stacks, the first stack for
 ![image](https://user-images.githubusercontent.com/53778545/212967743-7d30b221-b0d7-4ad1-8f94-79adb24e2f03.png)
 
 
-
-
--------------------
-
-* Argo CD creates a password and stores it as a secret in the cluster.
-* To get the password: `kubectl -n argocd get secret argocd-initial-admin-secret -o jsonpath="{.data.password}" | base64 -d; echo`
-* `$ kubectl port-forward -n argocd svc/argo-cd-argocd-server 7500:80`, then open `http://localhost:7500` in the browser.
-* Login to using the `admin` for the username and the password fom the previous command.
 
 
 
